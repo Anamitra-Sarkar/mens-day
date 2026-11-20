@@ -22,6 +22,12 @@ window.MENS_DAY = {
     title: "I WISH YOU",
     wishNote: "I don't know what the future holds, but I genuinely wish you a life filled with beautiful possibilities, peaceful mornings, achievements worth celebrating and happiness that stays.",
     cap1: "beautiful possibilities", cap2: "peaceful mornings", cap3: "achievements worth celebrating", cap4: "happiness that stays",
+    flipHint: "tap to open",
+    /* Back of each card: drafted by me, approved by the client side before going live. */
+    back1: "May every new door open onto something better than you imagined.",
+    back2: "May your days begin slowly, quietly and without worry.",
+    back3: "May your hard work always get the celebration it deserves.",
+    back4: "May it be the kind of happy that doesn't leave when the day does.",
 
     /* Section 4 */
     chTitle: "You helped me see things differently.",

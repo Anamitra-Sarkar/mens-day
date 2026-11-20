@@ -211,6 +211,13 @@
   addEventListener("hashchange", () => go(location.hash.slice(1), false));
   $$("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
 
+  /* ---------- wishes: tap a card to turn it over ---------- */
+  $$(".flip").forEach((b) => b.addEventListener("click", () => {
+    const on = b.getAttribute("aria-pressed") === "true";
+    b.setAttribute("aria-pressed", on ? "false" : "true");
+    if (!on) { const r = b.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 18, .5); }
+  }));
+
   /* ---------- 1 bouquet ---------- */
   const bq = $("#bouquet");
   bq.addEventListener("click", () => {
