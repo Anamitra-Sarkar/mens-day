@@ -1,58 +1,103 @@
 (() => {
   "use strict";
-  const C = window.MENS_DAY || {};
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const ORDER = ["bouquet", "letter", "collage", "final"];
 
-  /* ---------- fill content from config ---------- */
-  $("#to-line").textContent = `to ${C.to || "my favourite man"}`;
-  $("#final-title").textContent = C.finalTitle || "One Last Thing…";
+  /* ---------- language: Bengali by default, English one tap away ---------- */
+  const L = window.MENS_DAY || {};
+  let lang = "bn";
+  try {
+    const q = new URLSearchParams(location.search).get("lang");
+    const saved = localStorage.getItem("md-lang");
+    lang = q === "en" || q === "bn" ? q : saved === "en" || saved === "bn" ? saved : "bn";
+  } catch (_) {}
+  const t = (k) => (L[lang] && L[lang][k]) ?? (L.bn && L.bn[k]) ?? "";
 
   const paperText = $("#paper-text");
-  (C.letter || []).forEach((t) => {
-    const p = document.createElement("p");
-    p.textContent = t;
-    paperText.appendChild(p);
-  });
-  const sign = document.createElement("p");
-  sign.textContent = `— ${C.signoff || "Always yours"} ♥`;
-  sign.style.textAlign = "right";
-  paperText.appendChild(sign);
-
-  $$("[data-note]").forEach((el) => (el.textContent = (C.notes || [])[+el.dataset.note] || ""));
-  (C.stamps || []).forEach((s, i) => { const el = $("#stamp-" + i); if (el) el.textContent = s; });
-
-  // balloon title, one span per letter so they can drop in one by one
   const balloon = $("#balloon");
-  balloon.setAttribute("aria-label", C.title || "MY MAN");
-  [...(C.title || "MY MAN")].forEach((ch, i) => {
-    const s = document.createElement("span");
-    s.setAttribute("aria-hidden", "true");
-    s.style.setProperty("--i", i);
-    s.style.setProperty("--rr", `${(i % 2 ? 1 : -1) * (6 + (i % 3) * 3)}deg`);
-    if (ch === " ") s.className = "gap"; else s.textContent = ch;
-    balloon.appendChild(s);
-  });
+  let revealed = false;
 
-  // user photos replace the illustrated placeholders
-  $$(".polaroid .ph").forEach((ph, i) => {
-    const src = (C.photos || [])[i];
-    if (!src) return;
-    const img = new Image();
-    img.alt = "";
-    img.decoding = "async";
-    img.loading = "lazy";
-    img.onload = () => { ph.replaceChildren(img); };
-    img.src = src;
+  function graphemes(str) {
+    if (window.Intl && Intl.Segmenter) return [...new Intl.Segmenter(lang, { granularity: "grapheme" }).segment(str)].map((x) => x.segment);
+    return Array.from(str);
+  }
+  function buildBalloon() {
+    const title = t("title");
+    balloon.setAttribute("aria-label", title);
+    balloon.replaceChildren();
+    graphemes(title).forEach((ch, i) => {
+      const s = document.createElement("span");
+      s.setAttribute("aria-hidden", "true");
+      s.style.setProperty("--i", i);
+      s.style.setProperty("--rr", `${(i % 2 ? 1 : -1) * (6 + (i % 3) * 3)}deg`);
+      if (ch.trim() === "") s.className = "gap"; else s.textContent = ch;
+      balloon.appendChild(s);
+    });
+  }
+  function buildLetter() {
+    paperText.replaceChildren();
+    const parts = t("letter") || [];
+    parts.forEach((txt, i) => {
+      const p = document.createElement("p");
+      if (i === parts.length - 1) p.className = "key";
+      p.textContent = txt;
+      paperText.appendChild(p);
+    });
+    const sign = document.createElement("p");
+    sign.textContent = `— ${t("signoff")} ✦`;
+    sign.style.textAlign = "right";
+    paperText.appendChild(sign);
+  }
+  function renderReveal(instant) {
+    const reveal = $("#reveal"), note = $("#reveal-note");
+    reveal.textContent = "";
+    reveal.setAttribute("aria-label", t("finalLine"));
+    note.classList.remove("on");
+    const emph = t("emph");
+    const words = t("finalLine").split(" ");
+    words.forEach((w, i) => {
+      const s = document.createElement("span");
+      if (emph && w.includes(emph)) { const em = document.createElement("em"); em.textContent = w; s.appendChild(em); } else s.textContent = w;
+      s.style.cssText = `display:inline-block;margin-right:.3em;opacity:${instant ? 1 : 0};transform:${instant ? "none" : "translateY(10px)"};transition:opacity .4s,transform .5s cubic-bezier(.22,1,.36,1)`;
+      reveal.appendChild(s);
+      if (!instant) setTimeout(() => { s.style.opacity = 1; s.style.transform = "none"; }, reduce ? 0 : 150 * i);
+    });
+    note.textContent = t("finalNote");
+    setTimeout(() => note.classList.add("on"), instant || reduce ? 0 : 150 * words.length + 300);
+  }
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.title = t("pageTitle");
+    const md = document.querySelector('meta[name="description"]'); if (md) md.content = t("pageDesc");
+    $$("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
+    $("#to-line").textContent = t("to");
+    $("#final-title").textContent = t("finalTitle");
+    $("#lang").textContent = t("langBtn");
+    $("#lang").setAttribute("lang", lang === "bn" ? "en" : "bn");
+    $$("[data-note]").forEach((el) => (el.textContent = (t("notes") || [])[+el.dataset.note] || ""));
+    (t("stamps") || []).forEach((s, i) => { const el = $("#stamp-" + i); if (el) el.textContent = s; });
+    buildBalloon();
+    buildLetter();
+    const open = $("#envelope").getAttribute("aria-expanded") === "true";
+    $("#env-hint").textContent = open ? t("envHintOpen") : t("envHint");
+    const c = $("#cta"); c.textContent = c.disabled ? "✦ ✦ ✦" : t("cta");
+    if (revealed) renderReveal(true);
+    const hs = $("#bq-hint span"); if (hs) { hs.style.animation = "none"; void hs.offsetWidth; hs.style.animation = ""; }
+    if (open) sizePaper();
+  }
+  $("#lang").addEventListener("click", () => {
+    lang = lang === "bn" ? "en" : "bn";
+    try { localStorage.setItem("md-lang", lang); } catch (_) {}
+    applyLang();
   });
 
   /* ---------- slow drifting petals / stars in the background ---------- */
   if (!reduce) {
     const drift = $("#drift");
-    const bits = ["✦", "♥", "✧", "★", "✦"];
-    const cols = ["#f5ecc9", "#8fb0f2", "#f2b95b", "#cfe0ff", "#ff9bb8"];
+    const bits = ["✦", "✧", "★", "✦", "✧"];
+    const cols = ["#f5ecc9", "#8fb0f2", "#f2b95b", "#cfe0ff", "#f5ecc9"];
     const n = innerWidth < 600 ? 9 : 16;
     for (let i = 0; i < n; i++) {
       const el = document.createElement("i");
@@ -101,7 +146,7 @@
     })();
   })();
 
-  /* ---------- confetti / hearts canvas ---------- */
+  /* ---------- confetti canvas ---------- */
   const cv = $("#fx"), ctx = cv.getContext("2d");
   let W = 0, H = 0, dpr = 1, parts = [], raf = 0;
   function size() {
@@ -111,14 +156,13 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   size(); addEventListener("resize", size);
-  const COLS = ["#f2b95b", "#f5ecc9", "#4a7be0", "#8fb0f2", "#ff7ea8", "#e23a52", "#ffffff"];
-  function heartPath(x, y, s) {
+  const COLS = ["#f2b95b", "#f5ecc9", "#4a7be0", "#8fb0f2", "#ffffff", "#f2b95b"];
+  function starPath(x, y, s) {
     ctx.beginPath();
-    ctx.moveTo(x, y + s * .35);
-    ctx.bezierCurveTo(x, y - s * .2, x - s * .7, y - s * .2, x - s * .7, y + s * .25);
-    ctx.bezierCurveTo(x - s * .7, y + s * .7, x - s * .1, y + s * .9, x, y + s * 1.1);
-    ctx.bezierCurveTo(x + s * .1, y + s * .9, x + s * .7, y + s * .7, x + s * .7, y + s * .25);
-    ctx.bezierCurveTo(x + s * .7, y - s * .2, x, y - s * .2, x, y + s * .35);
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 ? s * .42 : s, a = i * Math.PI / 5 - Math.PI / 2;
+      ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
+    }
     ctx.closePath();
   }
   function burst(x, y, count = 70, spread = 1) {
@@ -128,7 +172,7 @@
       parts.push({
         x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 4,
         g: .16 + Math.random() * .08, s: 6 + Math.random() * 10, r: Math.random() * 6, vr: (Math.random() - .5) * .3,
-        c: COLS[(Math.random() * COLS.length) | 0], kind: Math.random() < .55 ? "heart" : Math.random() < .5 ? "rect" : "dot",
+        c: COLS[(Math.random() * COLS.length) | 0], kind: Math.random() < .55 ? "star" : Math.random() < .5 ? "rect" : "dot",
         life: 0, max: 90 + Math.random() * 60,
       });
     }
@@ -150,7 +194,7 @@
       ctx.globalAlpha = Math.min(1, (p.max - p.life) / 25);
       ctx.fillStyle = p.c;
       ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.translate(-p.x, -p.y);
-      if (p.kind === "heart") { heartPath(p.x, p.y, p.s); ctx.fill(); }
+      if (p.kind === "star") { starPath(p.x, p.y, p.s * .8); ctx.fill(); }
       else if (p.kind === "rect") ctx.fillRect(p.x - p.s / 2, p.y - p.s / 4, p.s, p.s / 2);
       else { ctx.beginPath(); ctx.arc(p.x, p.y, p.s / 3, 0, 7); ctx.fill(); }
       ctx.restore();
@@ -173,6 +217,7 @@
       s.setAttribute("aria-hidden", on ? "false" : "true");
       if (on) s.scrollTop = 0;
     });
+    $$("#story i").forEach((b, i) => b.classList.toggle("on", i <= ORDER.indexOf(name)));
     if (push) history.pushState(null, "", "#" + name);
     if (name === "collage" && !reduce) setTimeout(() => burst(W / 2, H * .3, 36, .8), 500);
   }
@@ -191,8 +236,7 @@
 
   /* ---------- 2 envelope ---------- */
   const env = $("#envelope"), paper = $("#paper");
-  function openEnvelope() {
-    if (env.getAttribute("aria-expanded") === "true") return;
+  function sizePaper() {
     const eh = env.getBoundingClientRect().height;
     // widen the paper to fit the words, then size it from an off-screen copy of the text
     const pw = Math.min(innerWidth - 32, 540);
@@ -206,8 +250,12 @@
     env.style.setProperty("--paper-w", pw + "px");
     env.style.setProperty("--paper-h", ph + "px");
     env.style.marginTop = Math.max(0, ph - eh * .94) + 28 + "px"; // reserve room so the letter never covers the headline
+  }
+  function openEnvelope() {
+    if (env.getAttribute("aria-expanded") === "true") return;
+    sizePaper();
     env.setAttribute("aria-expanded", "true");
-    $("#env-hint").textContent = "with all my love";
+    $("#env-hint").textContent = t("envHintOpen");
     burst(innerWidth / 2, innerHeight * .55, 30, .7);
     setTimeout(() => { $("#next-letter").hidden = false; }, reduce ? 0 : 900);
   }
@@ -218,28 +266,58 @@
   cta.addEventListener("click", () => {
     if (cta.disabled) return;
     cta.disabled = true;
-    cta.textContent = "♥ ♥ ♥";
-    const words = (C.finalLine || "I love you so much!").split(" ");
-    reveal.textContent = "";
-    words.forEach((w, i) => {
-      const s = document.createElement("span");
-      s.textContent = w;
-      if (/favourite|love/i.test(w)) { const em = document.createElement("em"); em.textContent = w; s.textContent = ""; s.appendChild(em); }
-      s.style.opacity = 0; s.style.display = "inline-block"; s.style.marginRight = ".3em"; s.style.transition = "opacity .4s, transform .5s cubic-bezier(.22,1,.36,1)"; s.style.transform = "translateY(10px)";
-      reveal.appendChild(s);
-      setTimeout(() => { s.style.opacity = 1; s.style.transform = "none"; }, reduce ? 0 : 140 * i);
-    });
+    cta.textContent = "✦ ✦ ✦";
+    revealed = true;
+    renderReveal(false);
     const r = cta.getBoundingClientRect();
     burst(r.left + r.width / 2, r.top, 120, 1.3);
     rain(3000);
     setTimeout(() => { $("#replay").hidden = false; }, 1200);
   });
   $("#replay").addEventListener("click", () => {
-    cta.disabled = false; cta.textContent = "Click for your final surprise »"; reveal.textContent = "";
+    revealed = false; cta.disabled = false; cta.textContent = t("cta"); reveal.textContent = ""; $("#reveal-note").classList.remove("on"); $("#reveal-note").textContent = "";
     $("#replay").hidden = true;
     env.setAttribute("aria-expanded", "false"); env.style.marginTop = ""; $("#next-letter").hidden = true;
-    $("#env-hint").textContent = "tap the envelope to read my letter";
+    $("#env-hint").textContent = t("envHint");
   });
 
+  /* ---------- phone: tap the right half = next, left half = back (like story viewers) ---------- */
+  function advance() {
+    if (current === "bouquet") bq.click();
+    else if (current === "letter") { if (env.getAttribute("aria-expanded") !== "true") openEnvelope(); else go("collage"); }
+    else if (current === "collage") go("final");
+    else if (current === "final") { if (!cta.disabled) cta.click(); else $("#replay").click(); }
+  }
+  function back() {
+    const i = ORDER.indexOf(current);
+    if (i > 0) go(ORDER[i - 1]);
+  }
+  let down = null;
+  const app = $("#app");
+  app.addEventListener("pointerdown", (e) => { down = e.pointerType === "mouse" ? null : { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId }; });
+  app.addEventListener("pointercancel", () => { down = null; });
+  app.addEventListener("pointerup", (e) => {
+    const d = down; down = null;
+    if (!d || d.id !== e.pointerId) return;
+    if (Math.hypot(e.clientX - d.x, e.clientY - d.y) > 10 || performance.now() - d.t > 600) return; // a scroll or long press, not a tap
+    const ctl = e.target.closest("button, a");                                                      // real controls keep their own behaviour...
+    if (ctl && !(ctl === env && env.getAttribute("aria-expanded") === "true")) return;               // ...but an opened letter is just content, so a tap on it navigates
+    dismissHint();
+    if (e.clientX < innerWidth / 2) back(); else advance();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); advance(); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); back(); }
+  });
+
+  // one-time hint, only on touch devices
+  const hint = document.createElement("div");
+  hint.className = "tap-hint"; hint.setAttribute("aria-hidden", "true");
+  hint.innerHTML = '<span data-i18n="tapL"></span><span data-i18n="tapR"></span>';
+  document.body.appendChild(hint);
+  function dismissHint() { hint.classList.add("gone"); }
+  setTimeout(dismissHint, 7000);
+
+  applyLang();
   go(location.hash.slice(1) || "bouquet", false);
 })();

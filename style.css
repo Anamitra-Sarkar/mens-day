@@ -10,9 +10,9 @@
   --blue-2:#8fb0f2;
   --pink:#ff7ea8;
   --card:#fffaf0;
-  --font-hand:"Gochi Hand","Patrick Hand",cursive;
-  --font-body:"Patrick Hand","Gochi Hand",cursive;
-  --font-script:"Caveat",cursive;
+  --font-hand:"Gochi Hand","Atma","Patrick Hand",cursive;
+  --font-body:"Patrick Hand","Hind Siliguri","Gochi Hand",cursive;
+  --font-script:"Caveat","Hind Siliguri",cursive;
   --font-balloon:"Bowlby One",system-ui,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -52,8 +52,7 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 .center{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;max-width:760px;margin:0 auto}
 
 .hint{font-family:var(--font-hand);font-size:clamp(22px,4.2vw,34px);margin:0;color:var(--gold);line-height:1.2;min-height:1.3em;text-shadow:0 2px 14px rgba(5,10,34,.7)}
-.hint span{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;animation:type 2.4s steps(36) .4s forwards;vertical-align:bottom}
-@keyframes type{to{max-width:100%}}
+.hint span{display:inline-block;opacity:0;animation:rise .9s var(--ease) .35s forwards}
 .tap{font-family:var(--font-script);font-size:clamp(20px,3.4vw,26px);margin:0;opacity:.78;color:var(--cream);letter-spacing:.02em}
 
 /* ---------- 1 bouquet ---------- */
@@ -171,7 +170,7 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
   clip-path:polygon(0 4%,4% 0,10% 5%,17% 0,26% 4%,35% 0,44% 5%,54% 0,63% 4%,72% 0,83% 5%,92% 0,100% 4%,98% 30%,100% 54%,97% 78%,100% 96%,92% 100%,82% 95%,70% 100%,58% 96%,46% 100%,34% 95%,22% 100%,11% 96%,0 100%,2% 70%,0 46%,3% 22%);
   filter:drop-shadow(0 3px 0 rgba(0,0,0,.4));
 }
-.note::before{content:"♥";color:var(--red);margin-right:.35em}
+.note::before{content:"✦";color:var(--blue);margin-right:.4em}
 .note-a{grid-area:na}.note-b{grid-area:nb}.note-c{grid-area:nc}
 
 .stamp{
@@ -267,11 +266,65 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 @keyframes moonfloat{0%,100%{translate:0 0}50%{translate:0 8px}}
 @media (max-width:600px){.scene{padding-top:84px}.st-hero,.st-web,.st-star{display:none}}
 
+/* ---------- phone: tap the right half to go on, the left half to go back ---------- */
+.story{display:none}
+.tap-hint{display:none}
+@media (hover:none) and (pointer:coarse){
+  .pager{display:none}
+  .scene{padding-bottom:calc(36px + env(safe-area-inset-bottom))}
+  .story{
+    display:flex;gap:5px;position:fixed;left:12px;right:12px;top:max(10px,env(safe-area-inset-top));z-index:30;pointer-events:none;
+  }
+  .story i{flex:1;height:3px;border-radius:3px;background:rgba(245,236,201,.28);overflow:hidden;position:relative}
+  .story i::after{content:"";position:absolute;inset:0;background:var(--cream);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+  .story i.on::after{transform:none}
+  .tap-hint{
+    display:flex;justify-content:space-between;gap:12px;position:fixed;left:18px;right:18px;bottom:max(18px,env(safe-area-inset-bottom));z-index:25;
+    font-family:var(--font-script);font-size:20px;color:var(--cream);opacity:.85;pointer-events:none;transition:opacity .6s;
+    text-shadow:0 2px 10px rgba(5,10,34,.8);
+  }
+  .tap-hint.gone{opacity:0}
+}
+/* ---------- language toggle + Bengali typography ---------- */
+.lang{
+  position:fixed;top:20px;left:16px;z-index:31;min-height:40px;padding:4px 16px;border-radius:999px;
+  background:rgba(245,236,201,.1);border:1.5px solid rgba(245,236,201,.5);color:var(--cream);
+  font-family:var(--font-body);font-size:18px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s;
+}
+.lang:hover{background:rgba(245,236,201,.22)}
+html[lang=bn] .lang{font-family:"Hind Siliguri",sans-serif;font-size:16px}
+.reveal-note{font-family:var(--font-script);font-weight:700;font-size:clamp(20px,4.4vw,26px);margin:10px 0 0;color:#1d3a8a;opacity:0;transition:opacity .8s .2s}
+.reveal-note.on{opacity:1}
+html[lang=bn] body{line-height:1.5}
+html[lang=bn] .headline{font-family:"Atma",cursive;font-weight:700;font-size:clamp(44px,11.5vw,104px);line-height:1.2}
+html[lang=bn] .to{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(18px,3.6vw,26px);line-height:1.5}
+html[lang=bn] .hint{font-size:clamp(20px,4vw,30px);line-height:1.45}
+html[lang=bn] .tap{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(16px,3vw,20px)}
+html[lang=bn] .paper-inner{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(16px,3.3vw,19.5px);line-height:28px}
+.paper-inner .key{color:#1d3a8a;font-weight:700}
+html[lang=bn] .paper-inner .key{font-weight:600}
+html[lang=bn] .note{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:clamp(16px,3.4vw,20px);line-height:1.5}
+html[lang=bn] .polaroid figcaption{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:17px;line-height:1.4}
+html[lang=bn] .balloon{font-family:"Atma",cursive;font-weight:700;font-size:clamp(38px,10.4vw,108px);line-height:1.25}
+html[lang=bn] .stamp{font-size:20px;line-height:1.3}
+html[lang=bn] .card h2{font-size:clamp(34px,8.6vw,56px);line-height:1.3}
+html[lang=bn] .card-eyebrow{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:18px}
+html[lang=bn] .card-sub{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(17px,3.6vw,20px);line-height:1.55}
+html[lang=bn] .cta{font-size:clamp(18px,4vw,21px)}
+html[lang=bn] .reveal{font-size:clamp(24px,5.6vw,36px);line-height:1.4;text-transform:none}
+.reveal,.card-sub{text-wrap:balance}
+html[lang=bn] .balloon span{-webkit-text-stroke:1.6px #0b1430;filter:drop-shadow(0 3px 0 rgba(5,10,34,.6)) drop-shadow(0 0 20px rgba(245,236,201,.4))}
+html[lang=bn] .reveal-note{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:clamp(16px,3.6vw,19px)}
+html[lang=bn] .made{font-family:"Hind Siliguri",sans-serif;font-size:16px}
+html[lang=bn] .pg{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:18px}
+html[lang=bn] .tap-hint{font-family:"Hind Siliguri",sans-serif;font-size:16px}
+
 @media (prefers-reduced-motion:reduce){
+  .story i::after{transition:none}
   #sky .star,#sky .spark,.moon{animation:none}
   #sky .star{opacity:.7}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  .hint span{max-width:100%}
+  .hint span{opacity:1}
   .headline span,.balloon span{opacity:1;transform:none}
   .drift{display:none}
 }

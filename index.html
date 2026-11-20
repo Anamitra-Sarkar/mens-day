@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Happy Men's Day</title>
-<meta name="description" content="A little surprise for my favourite man.">
+<meta name="description" content="A little thank-you for every man. Happy Men's Day.">
 <meta name="theme-color" content="#0a1233">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23101a40'/%3E%3Cpath d='M32 50 14 32a10 10 0 0 1 18-6 10 10 0 0 1 18 6z' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Caveat:wght@500;700&family=Gochi+Hand&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atma:wght@400;500;600;700&family=Bowlby+One&family=Caveat:wght@500;700&family=Gochi+Hand&family=Hind+Siliguri:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -72,19 +72,23 @@
       <rect width="200" height="160" fill="url(#sky)"/>
       <circle cx="150" cy="98" r="24" fill="#ffe9a8"/>
       <path d="M0 118c30-10 56-6 100-2s70-8 100 2v42H0z" fill="#2a1d3d"/>
-      <g fill="#150d22"><circle cx="86" cy="96" r="7"/><path d="M76 138c0-24 4-30 10-30s10 6 10 30z"/><circle cx="116" cy="92" r="7.5"/><path d="M105 138c0-28 4-34 11-34s11 6 11 34z"/></g>
+      <g fill="#150d22"><circle cx="92" cy="90" r="8"/><path d="M80 140c0-26 4-36 12-36s12 10 12 36z"/></g>
     </symbol>
-    <symbol id="ph-heart" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice">
-      <rect width="200" height="160" fill="#f5c6d6"/>
-      <circle cx="40" cy="30" r="50" fill="#ffd9e3"/><circle cx="170" cy="140" r="60" fill="#f0a9c1"/>
-      <use href="#heart" x="55" y="35" width="90" height="85" style="color:#c5283d"/>
+    <symbol id="ph-mountain" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice">
+      <defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16265e"/><stop offset="1" stop-color="#5d86d9"/></linearGradient></defs>
+      <rect width="200" height="160" fill="url(#sky2)"/>
+      <g fill="#fff"><circle cx="30" cy="26" r="1.6"/><circle cx="150" cy="22" r="1.4"/><circle cx="110" cy="44" r="1.2"/></g>
+      <path d="M-10 160 70 54l30 40 24-30 86 96z" fill="#2a3f86"/>
+      <path d="M70 54 52 82l10-5 8 9 8-9 10 5z" fill="#eef3ff"/>
+      <path d="M-10 160 40 110l40 50z" fill="#1c2d6b"/>
+      <path d="M70 54v-14" stroke="#f2b95b" stroke-width="2.6"/><path d="M70 40l14 5-14 5z" fill="#f2b95b"/>
     </symbol>
     <symbol id="ph-field" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice">
       <rect width="200" height="160" fill="#bfe3f6"/>
       <circle cx="160" cy="34" r="16" fill="#fff6c2"/>
       <path d="M0 100c40-14 80-14 120-4s60 4 80-4v68H0z" fill="#6fbf4e"/>
       <path d="M0 126c50-10 100-10 200 0v34H0z" fill="#4da13a"/>
-      <g fill="#fff" stroke="#101a40" stroke-width="2"><circle cx="70" cy="104" r="6"/><circle cx="130" cy="108" r="6"/></g>
+      <g stroke="#101a40" stroke-width="2"><rect x="94" y="100" width="9" height="30" fill="#6b4a2b"/><circle cx="98" cy="88" r="21" fill="#2f8a3a"/></g>
     </symbol>
     <symbol id="ph-skyline" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice">
       <rect width="200" height="160" fill="#1f2a5c"/>
@@ -99,12 +103,15 @@
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="drift" id="drift" aria-hidden="true"></div>
 
+<button class="lang" id="lang" type="button"></button>
+<div class="story" id="story" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
 <main id="app">
 
   <!-- 1 · BOUQUET -->
   <section class="scene" id="s-bouquet" data-scene="bouquet" aria-label="A surprise">
     <div class="center">
-      <p class="hint hint--top" id="bq-hint"><span>Click on the bouquet for a surprise</span></p>
+      <p class="hint hint--top" id="bq-hint"><span data-i18n="hint"></span></p>
       <button class="bouquet" id="bouquet" type="button" aria-label="Open the bouquet">
         <svg viewBox="0 0 320 420" role="img" aria-hidden="true">
           <!-- wrapping -->
@@ -125,7 +132,7 @@
           <use href="#bow" x="112" y="196" width="96" height="72" style="color:#f2b95b"/>
         </svg>
       </button>
-      <p class="tap">tap · tap · tap</p>
+      <p class="tap" data-i18n="tapBq"></p>
     </div>
   </section>
 
@@ -133,15 +140,15 @@
   <section class="scene" id="s-letter" data-scene="letter" aria-label="A letter">
     <div class="center letter-stage">
       <div class="stickers" aria-hidden="true">
-        <svg class="st st-heart-a"  viewBox="0 0 32 30" style="color:#ff7ea8"><use href="#heart"/></svg>
+        <svg class="st st-heart-a"  viewBox="0 0 40 40" style="color:#f2b95b"><use href="#star"/></svg>
         <svg class="st st-hero"     viewBox="0 0 60 70" style="color:#3f6fd1"><use href="#hero"/></svg>
         <svg class="st st-dumb"     viewBox="0 0 80 40" style="color:#f2b95b"><use href="#dumbbell"/></svg>
-        <svg class="st st-heart-b"  viewBox="0 0 32 30" style="color:#c5283d"><use href="#heart"/></svg>
+        <svg class="st st-heart-b"  viewBox="0 0 40 40" style="color:#8fb0f2"><use href="#star"/></svg>
         <svg class="st st-web"      viewBox="0 0 60 60"><use href="#web"/></svg>
         <svg class="st st-star"     viewBox="0 0 40 40" style="color:#ffd84d"><use href="#star"/></svg>
       </div>
 
-      <h1 class="headline"><span class="hl-a">Happy</span> <span class="hl-b">Men's</span> <span class="hl-c">Day</span></h1>
+      <h1 class="headline"><span class="hl-a" data-i18n="hl1"></span> <span class="hl-b" data-i18n="hl2"></span> <span class="hl-c" data-i18n="hl3"></span></h1>
       <p class="to" id="to-line"></p>
 
       <button class="envelope" id="envelope" type="button" aria-expanded="false" aria-controls="paper">
@@ -151,22 +158,22 @@
         </span>
         <span class="env-front"></span>
         <span class="env-flap"></span>
-        <span class="env-seal"><svg viewBox="0 0 32 30"><use href="#heart"/></svg></span>
+        <span class="env-seal"><svg viewBox="0 0 40 40"><use href="#star"/></svg></span>
       </button>
-      <p class="tap" id="env-hint">tap the envelope to read my letter</p>
+      <p class="tap" id="env-hint"></p>
     </div>
-    <nav class="pager"><button class="pg pg--next" data-go="collage" id="next-letter" hidden>next &raquo;</button></nav>
+    <nav class="pager"><button class="pg pg--next" data-go="collage" id="next-letter" hidden data-i18n="next"></button></nav>
   </section>
 
   <!-- 3 · COLLAGE -->
   <section class="scene" id="s-collage" data-scene="collage" aria-label="Our little world">
     <div class="collage">
-      <h2 class="balloon" id="balloon" aria-label="My man"></h2>
+      <h2 class="balloon" id="balloon" aria-label="For men"></h2>
 
       <figure class="polaroid pol-a" style="--r:-4deg">
         <i class="tape tape-a"></i>
         <div class="ph"><svg viewBox="0 0 200 160"><use href="#ph-sunset"/></svg></div>
-        <figcaption>favourite person</figcaption>
+        <figcaption data-i18n="cap1"></figcaption>
       </figure>
 
       <p class="note note-a" style="--r:-2deg" data-note="0"></p>
@@ -176,19 +183,19 @@
       <figure class="polaroid pol-b" style="--r:3.5deg">
         <i class="tape tape-b"></i>
         <div class="ph"><svg viewBox="0 0 200 160"><use href="#ph-field"/></svg></div>
-        <figcaption>just us</figcaption>
+        <figcaption data-i18n="cap2"></figcaption>
       </figure>
 
       <figure class="polaroid pol-c" style="--r:-2.5deg">
         <i class="tape tape-a"></i>
         <div class="ph"><svg viewBox="0 0 200 160"><use href="#ph-skyline"/></svg></div>
-        <figcaption>late night talks</figcaption>
+        <figcaption data-i18n="cap3"></figcaption>
       </figure>
 
       <figure class="polaroid pol-d" style="--r:4deg">
         <i class="tape tape-b"></i>
-        <div class="ph"><svg viewBox="0 0 200 160"><use href="#ph-heart"/></svg></div>
-        <figcaption>forever my favourite</figcaption>
+        <div class="ph"><svg viewBox="0 0 200 160"><use href="#ph-mountain"/></svg></div>
+        <figcaption data-i18n="cap4"></figcaption>
       </figure>
 
       <svg class="deco bow-d"   viewBox="0 0 80 60" style="color:#f2b95b" aria-hidden="true"><use href="#bow"/></svg>
@@ -197,8 +204,8 @@
       <svg class="deco hero-d"  viewBox="0 0 60 70" style="color:#3f6fd1" aria-hidden="true"><use href="#hero"/></svg>
     </div>
     <nav class="pager">
-      <button class="pg pg--back" data-go="letter">&laquo; back</button>
-      <button class="pg pg--next" data-go="final">next &raquo;</button>
+      <button class="pg pg--back" data-go="letter" data-i18n="back"></button>
+      <button class="pg pg--next" data-go="final" data-i18n="next"></button>
     </nav>
   </section>
 
@@ -206,17 +213,18 @@
   <section class="scene" id="s-final" data-scene="final" aria-label="One last thing">
     <div class="center final">
       <div class="card">
-        <p class="card-eyebrow">for you</p>
+        <p class="card-eyebrow" data-i18n="eyebrow"></p>
         <h2 id="final-title"></h2>
-        <p class="card-sub">You are not just special today. You are special every single day.</p>
-        <button class="cta" id="cta" type="button">Click for your final surprise &raquo;</button>
+        <p class="card-sub" data-i18n="sub"></p>
+        <button class="cta" id="cta" type="button"></button>
         <p class="reveal" id="reveal" aria-live="polite"></p>
+        <p class="reveal-note" id="reveal-note"></p>
       </div>
-      <p class="made">made with love, just for you</p>
+      <p class="made" data-i18n="made"></p>
     </div>
     <nav class="pager">
-      <button class="pg pg--back" data-go="collage">&laquo; back</button>
-      <button class="pg pg--next" data-go="bouquet" id="replay" hidden>replay &raquo;</button>
+      <button class="pg pg--back" data-go="collage" data-i18n="back"></button>
+      <button class="pg pg--next" data-go="bouquet" id="replay" hidden data-i18n="replay"></button>
     </nav>
   </section>
 
