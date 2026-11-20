@@ -1,11 +1,13 @@
 :root{
-  --paper:#fbf0bd;
-  --paper-2:#f5e49a;
-  --ink:#5b1a2b;
+  --paper:#0a1233;
+  --paper-2:#0f1d4f;
+  --ink:#101a40;
+  --cream:#f5ecc9;
+  --gold:#f2b95b;
   --red:#c5283d;
   --red-2:#e23a52;
-  --blue:#3f5fa8;
-  --blue-2:#6c8bd6;
+  --blue:#3f6fd1;
+  --blue-2:#8fb0f2;
   --pink:#ff7ea8;
   --card:#fffaf0;
   --font-hand:"Gochi Hand","Patrick Hand",cursive;
@@ -19,12 +21,12 @@ html{-webkit-text-size-adjust:100%}
 html,body{margin:0;height:100%}
 body{
   font-family:var(--font-body);
-  color:var(--ink);
+  color:var(--cream);
   background-color:var(--paper);
-  /* vertical stripes + sparse pastel stars, like the client's references */
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cg%3E%3Cpath d='M30 20l2 5 5 .5-4 3.5 1.2 5-4.2-2.8-4.2 2.8 1.2-5-4-3.5 5-.5z' fill='%23f08aa6'/%3E%3Cpath d='M150 58l1.6 4 4 .4-3.1 2.8 1 4-3.5-2.3-3.5 2.3 1-4-3.1-2.8 4-.4z' fill='%238aa4e6'/%3E%3Cpath d='M80 130l2 5 5 .5-4 3.5 1.2 5-4.2-2.8-4.2 2.8 1.2-5-4-3.5 5-.5z' fill='%238aa4e6'/%3E%3Cpath d='M190 168l1.6 4 4 .4-3.1 2.8 1 4-3.5-2.3-3.5 2.3 1-4-3.1-2.8 4-.4z' fill='%23f08aa6'/%3E%3Cpath d='M20 190l1.6 4 4 .4-3.1 2.8 1 4-3.5-2.3-3.5 2.3 1-4-3.1-2.8 4-.4z' fill='%238aa4e6'/%3E%3C/g%3E%3C/svg%3E"),
-    repeating-linear-gradient(90deg,transparent 0 34px,rgba(240,214,110,.55) 34px 68px);
+    radial-gradient(120% 60% at 50% 118%,rgba(70,115,230,.32),transparent 62%),
+    radial-gradient(60% 40% at 82% 8%,rgba(120,160,255,.14),transparent 70%),
+    linear-gradient(180deg,#050a22 0%,#091340 52%,#10236a 100%);
   background-attachment:fixed;
   overflow:hidden;
   -webkit-font-smoothing:antialiased;
@@ -35,7 +37,7 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
 .drift{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}
-.drift i{position:absolute;top:-8vh;font-style:normal;opacity:.55;will-change:transform;animation:fall linear infinite}
+.drift i{position:absolute;top:-8vh;font-style:normal;opacity:.5;will-change:transform;animation:fall linear infinite}
 @keyframes fall{to{transform:translate3d(var(--dx,40px),112vh,0) rotate(var(--rot,200deg))}}
 
 /* ---------- scenes ---------- */
@@ -49,15 +51,15 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 .scene.is-active{opacity:1;visibility:visible;transform:none;transition:opacity .5s var(--ease),transform .6s var(--ease)}
 .center{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;max-width:760px;margin:0 auto}
 
-.hint{font-family:var(--font-hand);font-size:clamp(22px,4.2vw,34px);margin:0;color:var(--red);line-height:1.2;min-height:1.3em}
+.hint{font-family:var(--font-hand);font-size:clamp(22px,4.2vw,34px);margin:0;color:var(--gold);line-height:1.2;min-height:1.3em;text-shadow:0 2px 14px rgba(5,10,34,.7)}
 .hint span{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;animation:type 2.4s steps(36) .4s forwards;vertical-align:bottom}
 @keyframes type{to{max-width:100%}}
-.tap{font-family:var(--font-script);font-size:clamp(20px,3.4vw,26px);margin:0;opacity:.7;letter-spacing:.02em}
+.tap{font-family:var(--font-script);font-size:clamp(20px,3.4vw,26px);margin:0;opacity:.78;color:var(--cream);letter-spacing:.02em}
 
 /* ---------- 1 bouquet ---------- */
 .bouquet{
   background:none;border:0;padding:0;width:min(74vw,330px);
-  filter:drop-shadow(0 18px 18px rgba(91,26,43,.25));
+  filter:drop-shadow(0 18px 18px rgba(0,0,0,.45)) drop-shadow(0 0 40px rgba(143,176,242,.28));
   animation:sway 4.2s ease-in-out infinite;transform-origin:50% 100%;
   transition:transform .35s var(--ease);
 }
@@ -69,33 +71,33 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.18) rotate(-4deg)}100%{transform:scale(.0) rotate(12deg);opacity:0}}
 
 /* ---------- 2 headline + envelope ---------- */
-.letter-stage{position:relative;gap:12px;padding-top:6px}
+.letter-stage{position:relative;gap:12px;padding-top:6px;max-width:1000px;width:100%}
 .headline{
   font-family:var(--font-hand);font-weight:400;margin:0;line-height:.95;
-  font-size:clamp(54px,13vw,116px);color:var(--ink);letter-spacing:.01em;
+  font-size:clamp(54px,13vw,116px);color:var(--cream);letter-spacing:.01em;text-shadow:0 4px 0 rgba(5,10,34,.55),0 0 38px rgba(245,236,201,.22);
   display:flex;flex-wrap:wrap;justify-content:center;gap:0 .26em;position:relative;z-index:2;
 }
 .headline span{display:inline-block;opacity:0;transform:translateY(24px) rotate(-3deg)}
 .is-active .headline span{animation:rise .8s var(--ease) forwards}
 .is-active .hl-b{animation-delay:.12s}.is-active .hl-c{animation-delay:.24s}
 @keyframes rise{to{opacity:1;transform:none}}
-.hl-b{color:var(--red)}
-.to{font-family:var(--font-script);font-size:clamp(26px,4.6vw,38px);margin:0 0 6px;color:var(--blue);font-weight:700}
+.hl-b{color:var(--gold)}
+.to{font-family:var(--font-script);font-size:clamp(26px,4.6vw,38px);margin:0 0 6px;color:var(--blue-2);font-weight:700}
 
-.stickers .st{position:absolute;width:clamp(44px,8vw,84px);height:auto;filter:drop-shadow(0 3px 0 rgba(255,255,255,.9));animation:bob 5s ease-in-out infinite;z-index:1}
+.stickers .st{position:absolute;width:clamp(44px,8vw,84px);height:auto;filter:drop-shadow(0 0 0 #fff) drop-shadow(0 2px 0 rgba(245,236,201,.95)) drop-shadow(0 0 10px rgba(245,236,201,.35));animation:bob 5s ease-in-out infinite;z-index:1}
 .st-heart-a{left:2%;top:0;transform:rotate(-14deg)}
 .st-hero{right:3%;top:-2%;animation-delay:.6s}
 .st-dumb{right:2%;top:44%;width:clamp(54px,10vw,104px)!important;animation-delay:1.2s}
 .st-heart-b{left:5%;top:34%;width:clamp(30px,5vw,52px)!important;animation-delay:.3s}
-.st-web{left:0;bottom:6%;opacity:.5;animation:none}
+.st-web{left:0;bottom:6%;opacity:.55;animation:none;filter:none!important}
 .st-star{left:14%;bottom:16%;width:clamp(26px,4vw,40px)!important;animation-delay:.9s}
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -10px}}
 
 .envelope{
   --w:min(84vw,380px);
-  position:relative;width:var(--w);height:calc(var(--w)*.64);margin-top:clamp(28px,7vh,64px);
+  position:relative;z-index:4;width:var(--w);height:calc(var(--w)*.64);margin-top:clamp(28px,7vh,64px);
   background:none;border:0;padding:0;perspective:900px;
-  filter:drop-shadow(0 14px 14px rgba(91,26,43,.22));
+  filter:drop-shadow(0 14px 14px rgba(0,0,0,.45)) drop-shadow(0 0 30px rgba(143,176,242,.25));
 }
 .env-back,.env-front,.env-flap{position:absolute;inset:0;border:3px solid var(--ink);border-radius:10px}
 .env-back{background:#8aa4e6}
@@ -111,7 +113,7 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 .env-seal svg use{color:#fff}
 .paper{
   position:absolute;left:5%;right:5%;bottom:6%;height:92%;z-index:3;background:var(--card);border:3px solid var(--ink);border-radius:6px;
-  transition:transform .9s var(--ease),height .9s var(--ease),z-index 0s .2s;overflow:hidden;
+  transition:transform .9s var(--ease),height .9s var(--ease),left .9s var(--ease),width .9s var(--ease),z-index 0s .2s;overflow:hidden;
   background-image:repeating-linear-gradient(transparent 0 27px,rgba(63,95,168,.18) 27px 28px);
 }
 .paper-inner{display:block;padding:16px 18px;font-family:var(--font-script);font-weight:700;font-size:clamp(18px,3.6vw,23px);line-height:28px;text-align:left;color:var(--ink);text-wrap:pretty}
@@ -120,7 +122,7 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 .envelope[aria-expanded="true"] .env-seal{opacity:0;scale:.2}
 .envelope[aria-expanded="true"]{cursor:default}
 .envelope[aria-expanded="true"] .paper{
-  z-index:7;height:var(--paper-h,300px);overflow:auto;
+  z-index:7;height:var(--paper-h,300px);overflow:auto;right:auto;width:var(--paper-w,300px);left:calc(50% - var(--paper-w,300px) / 2);
 }
 .envelope:not([aria-expanded="true"]):hover{animation:wiggle .5s}
 @keyframes wiggle{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
@@ -135,14 +137,14 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
   padding:8px 0 24px;
 }
 .balloon{
-  grid-area:title;margin:0;font-family:var(--font-balloon);font-weight:400;display:flex;flex-wrap:wrap;gap:0 .08em;justify-content:center;
-  font-size:clamp(54px,15vw,132px);line-height:1;letter-spacing:.02em;
+  grid-area:title;margin:0;font-family:var(--font-balloon);font-weight:400;display:flex;flex-wrap:nowrap;white-space:nowrap;gap:0 .06em;justify-content:center;max-width:100%;
+  font-size:clamp(34px,12.6vw,132px);line-height:1;letter-spacing:.02em;
 }
 .balloon span{
   display:inline-block;
   background:linear-gradient(165deg,#fff 0%,#c9d3ea 30%,#8e9bc0 52%,#e6ecfa 70%,#7d8ab3 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;
-  filter:drop-shadow(0 4px 0 rgba(91,26,43,.28));
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:3px #0b1430;paint-order:stroke fill;
+  filter:drop-shadow(0 4px 0 rgba(5,10,34,.6)) drop-shadow(0 0 22px rgba(245,236,201,.35));
   opacity:0;transform:translateY(-60px) scale(.7) rotate(var(--rr,-8deg));
 }
 .balloon .gap{width:.28em}
@@ -150,10 +152,10 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 @keyframes drop{60%{transform:translateY(6px) scale(1.04)}to{opacity:1;transform:none}}
 
 .polaroid{
-  --r:0deg;margin:0;position:relative;width:min(100%,250px);background:#fff;padding:10px 10px 12px;border:2px solid #ead9a0;border-radius:3px;
-  box-shadow:0 10px 18px rgba(91,26,43,.22);transform:rotate(var(--r));transition:transform .4s var(--ease),box-shadow .4s;
+  --r:0deg;margin:0;position:relative;width:min(100%,250px);color:var(--ink);background:#fffdf6;padding:10px 10px 12px;border:2px solid #ead9a0;border-radius:3px;
+  box-shadow:0 10px 18px rgba(0,0,0,.4);transform:rotate(var(--r));transition:transform .4s var(--ease),box-shadow .4s;
 }
-.polaroid:hover{transform:rotate(0) scale(1.05) translateY(-4px);box-shadow:0 18px 26px rgba(91,26,43,.28);z-index:3}
+.polaroid:hover{transform:rotate(0) scale(1.05) translateY(-4px);box-shadow:0 18px 26px rgba(0,0,0,.45);z-index:3}
 .polaroid .ph{aspect-ratio:5/4;overflow:hidden;background:#ddd;border:1px solid rgba(0,0,0,.1)}
 .polaroid .ph svg,.polaroid .ph img{display:block;width:100%;height:100%;object-fit:cover}
 .polaroid figcaption{font-family:var(--font-script);font-weight:700;font-size:21px;text-align:center;margin-top:8px;line-height:1.1}
@@ -167,19 +169,19 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
   background:#e8d9d3;
   background-image:linear-gradient(transparent 94%,rgba(91,26,43,.08) 0);
   clip-path:polygon(0 4%,4% 0,10% 5%,17% 0,26% 4%,35% 0,44% 5%,54% 0,63% 4%,72% 0,83% 5%,92% 0,100% 4%,98% 30%,100% 54%,97% 78%,100% 96%,92% 100%,82% 95%,70% 100%,58% 96%,46% 100%,34% 95%,22% 100%,11% 96%,0 100%,2% 70%,0 46%,3% 22%);
-  filter:drop-shadow(0 3px 0 rgba(91,26,43,.2));
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.4));
 }
 .note::before{content:"♥";color:var(--red);margin-right:.35em}
 .note-a{grid-area:na}.note-b{grid-area:nb}.note-c{grid-area:nc}
 
 .stamp{
-  --r:0deg;font-family:var(--font-hand);font-size:24px;color:var(--red);border:3px solid var(--red);border-radius:50% 46% 52% 48%/55% 50% 50% 45%;
-  padding:8px 18px;background:rgba(255,255,255,.6);transform:rotate(var(--r));letter-spacing:.03em;white-space:nowrap;
+  --r:0deg;font-family:var(--font-hand);font-size:24px;color:var(--gold);border:3px solid var(--gold);border-radius:50% 46% 52% 48%/55% 50% 50% 45%;
+  padding:8px 18px;background:rgba(242,185,91,.1);transform:rotate(var(--r));letter-spacing:.03em;white-space:nowrap;
 }
 .stamp-a{grid-area:st;justify-self:center;align-self:start}
 .stamp-b{grid-area:st;justify-self:center;align-self:end}
 .stamp:empty{display:none}
-.deco{height:auto;filter:drop-shadow(0 3px 0 rgba(255,255,255,.9));animation:bob 5s ease-in-out infinite}
+.deco{height:auto;filter:drop-shadow(0 2px 0 rgba(245,236,201,.95)) drop-shadow(0 0 10px rgba(245,236,201,.35));animation:bob 5s ease-in-out infinite}
 .bow-d{grid-area:bow;width:clamp(64px,14vw,110px)}
 .hero-d{grid-area:hero;width:clamp(56px,11vw,90px);animation-delay:.7s}
 
@@ -207,14 +209,14 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 /* ---------- 4 final ---------- */
 .final{gap:18px}
 .card{
-  width:min(92vw,520px);background:var(--card);border:3px solid var(--ink);border-radius:14px;padding:clamp(22px,5vw,36px) clamp(18px,5vw,34px);
-  box-shadow:8px 8px 0 rgba(91,26,43,.85);position:relative;
-  background-image:linear-gradient(135deg,rgba(255,126,168,.14),transparent 40%);
+  width:min(92vw,520px);color:var(--ink);background:var(--card);border:3px solid var(--ink);border-radius:14px;padding:clamp(22px,5vw,36px) clamp(18px,5vw,34px);
+  box-shadow:0 0 0 1px rgba(245,236,201,.18),0 26px 60px rgba(0,0,0,.5),0 0 60px rgba(110,150,255,.22);position:relative;
+  background-image:linear-gradient(135deg,rgba(143,176,242,.18),transparent 45%);
 }
 .card::before,.card::after{content:"";position:absolute;width:74px;height:24px;background:rgba(108,139,214,.55);top:-12px;border-left:2px dashed rgba(255,255,255,.7);border-right:2px dashed rgba(255,255,255,.7)}
 .card::before{left:14px;rotate:-8deg}.card::after{right:14px;rotate:7deg;background:rgba(255,126,168,.55)}
-.card-eyebrow{font-family:var(--font-script);font-size:24px;margin:0;color:var(--blue);font-weight:700;letter-spacing:.06em;text-transform:lowercase}
-.card h2{font-family:var(--font-hand);font-weight:400;font-size:clamp(40px,10vw,64px);line-height:1;margin:2px 0 8px;color:var(--red)}
+.card-eyebrow{font-family:var(--font-script);font-size:24px;margin:0;color:#8a5a12;font-weight:700;letter-spacing:.06em;text-transform:lowercase}
+.card h2{font-family:var(--font-hand);font-weight:400;font-size:clamp(40px,10vw,64px);line-height:1;margin:2px 0 8px;color:#1d3a8a}
 .card-sub{font-size:clamp(20px,4vw,24px);margin:0 0 18px;line-height:1.25}
 .cta{
   background:var(--red);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:14px 26px;font-family:var(--font-hand);font-size:clamp(20px,4.4vw,24px);
@@ -232,17 +234,42 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
 .pager{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:12px 18px calc(14px + env(safe-area-inset-bottom));pointer-events:none;z-index:20}
 .pager .pg{pointer-events:auto}
 .pg{
-  background:var(--card);border:3px solid var(--ink);border-radius:999px;padding:8px 20px;min-height:46px;min-width:46px;font-family:var(--font-hand);font-size:22px;
-  box-shadow:0 4px 0 var(--ink);transition:transform .2s var(--ease),box-shadow .2s;
+  color:var(--ink);background:var(--cream);border:3px solid var(--ink);border-radius:999px;padding:8px 20px;min-height:46px;min-width:46px;font-family:var(--font-hand);font-size:22px;
+  box-shadow:0 4px 0 var(--blue-2),0 0 24px rgba(143,176,242,.25);transition:transform .2s var(--ease),box-shadow .2s;
 }
-.pg:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--ink)}
-.pg:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.pg:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--blue-2),0 0 28px rgba(143,176,242,.35)}
+.pg:active{transform:translateY(3px);box-shadow:0 1px 0 var(--blue-2)}
 .pg--next{margin-left:auto}
 .pg--next:not([hidden]){animation:nudge 1.6s ease-in-out infinite}
 @keyframes nudge{50%{translate:5px 0}}
 .scene:not(.is-active) .pager{display:none}
 
+/* ---------- night sky ---------- */
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#sky .star{position:absolute;border-radius:50%;background:#f5ecc9;opacity:.2;animation:twinkle var(--d,4s) ease-in-out var(--dl,0s) infinite}
+#sky .star.big{box-shadow:0 0 6px 1px rgba(245,236,201,.75)}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+#sky .spark{position:absolute;color:#f5ecc9;font-size:var(--s,16px);line-height:1;text-shadow:0 0 10px rgba(245,236,201,.9);animation:twinkle var(--d,5s) ease-in-out var(--dl,0s) infinite}
+#sky .shoot{position:absolute;width:140px;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(245,236,201,0),#f5ecc9);transform:rotate(28deg);opacity:0;animation:shoot 1.3s ease-out forwards}
+@keyframes shoot{0%{opacity:0;translate:0 0}12%{opacity:1}100%{opacity:0;translate:340px 190px}}
+.moon{
+  position:absolute;top:clamp(14px,5vh,56px);right:clamp(14px,5vw,80px);width:clamp(64px,13vw,176px);aspect-ratio:1;border-radius:50%;
+  background:
+    radial-gradient(circle at 63% 36%,rgba(150,128,78,.38) 0 8%,transparent 9.5%),
+    radial-gradient(circle at 33% 60%,rgba(150,128,78,.32) 0 12%,transparent 13.5%),
+    radial-gradient(circle at 70% 72%,rgba(150,128,78,.3) 0 6%,transparent 7.5%),
+    radial-gradient(circle at 44% 24%,rgba(150,128,78,.26) 0 5%,transparent 6.5%),
+    radial-gradient(circle at 34% 30%,#fffbe8 0%,#f5e9b9 52%,#d9c98d 100%);
+  box-shadow:0 0 50px 14px rgba(245,236,201,.28),0 0 150px 56px rgba(110,150,255,.2);
+  animation:moonfloat 9s ease-in-out infinite;
+}
+.moon::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 72% 62%,transparent 52%,rgba(16,26,64,.32) 100%)}
+@keyframes moonfloat{0%,100%{translate:0 0}50%{translate:0 8px}}
+@media (max-width:600px){.scene{padding-top:84px}.st-hero,.st-web,.st-star{display:none}}
+
 @media (prefers-reduced-motion:reduce){
+  #sky .star,#sky .spark,.moon{animation:none}
+  #sky .star{opacity:.7}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .hint span{max-width:100%}
   .headline span,.balloon span{opacity:1;transform:none}

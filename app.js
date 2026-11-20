@@ -51,8 +51,8 @@
   /* ---------- slow drifting petals / stars in the background ---------- */
   if (!reduce) {
     const drift = $("#drift");
-    const bits = ["♥", "✦", "✿", "★", "♥"];
-    const cols = ["#f08aa6", "#8aa4e6", "#e23a52", "#6c8bd6", "#ff7ea8"];
+    const bits = ["✦", "♥", "✧", "★", "✦"];
+    const cols = ["#f5ecc9", "#8fb0f2", "#f2b95b", "#cfe0ff", "#ff9bb8"];
     const n = innerWidth < 600 ? 9 : 16;
     for (let i = 0; i < n; i++) {
       const el = document.createElement("i");
@@ -68,6 +68,39 @@
     }
   }
 
+  /* ---------- midnight sky: twinkling stars + shooting stars ---------- */
+  (() => {
+    const sky = $("#sky");
+    const n = innerWidth < 600 ? 70 : 130;
+    for (let i = 0; i < n; i++) {
+      const st = document.createElement("i");
+      st.className = "star" + (i % 9 === 0 ? " big" : "");
+      const z = i % 9 === 0 ? 2.6 : 1 + Math.random() * 1.4;
+      st.style.cssText = `left:${(Math.random() * 100).toFixed(2)}%;top:${(Math.random() * 100).toFixed(2)}%;width:${z}px;height:${z}px;--d:${(2 + Math.random() * 4).toFixed(1)}s;--dl:${(-Math.random() * 6).toFixed(1)}s`;
+      sky.appendChild(st);
+    }
+    for (let i = 0; i < 9; i++) {
+      const sp = document.createElement("i");
+      sp.className = "spark"; sp.textContent = "✦";
+      sp.style.cssText = `left:${(4 + Math.random() * 90).toFixed(1)}%;top:${(4 + Math.random() * 86).toFixed(1)}%;--s:${(10 + Math.random() * 14).toFixed(0)}px;--d:${(3 + Math.random() * 4).toFixed(1)}s;--dl:${(-Math.random() * 6).toFixed(1)}s`;
+      sky.appendChild(sp);
+    }
+    if (reduce) return;
+    (function shoot() {
+      setTimeout(() => {
+        if (!document.hidden) {
+          const s = document.createElement("i");
+          s.className = "shoot";
+          s.style.left = (Math.random() * 55) + "%";
+          s.style.top = (4 + Math.random() * 30) + "%";
+          sky.appendChild(s);
+          setTimeout(() => s.remove(), 1500);
+        }
+        shoot();
+      }, 6000 + Math.random() * 6000);
+    })();
+  })();
+
   /* ---------- confetti / hearts canvas ---------- */
   const cv = $("#fx"), ctx = cv.getContext("2d");
   let W = 0, H = 0, dpr = 1, parts = [], raf = 0;
@@ -78,7 +111,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   size(); addEventListener("resize", size);
-  const COLS = ["#c5283d", "#e23a52", "#3f5fa8", "#6c8bd6", "#ff7ea8", "#ffd84d", "#ffffff"];
+  const COLS = ["#f2b95b", "#f5ecc9", "#4a7be0", "#8fb0f2", "#ff7ea8", "#e23a52", "#ffffff"];
   function heartPath(x, y, s) {
     ctx.beginPath();
     ctx.moveTo(x, y + s * .35);
@@ -161,12 +194,20 @@
   function openEnvelope() {
     if (env.getAttribute("aria-expanded") === "true") return;
     const eh = env.getBoundingClientRect().height;
-    const want = Math.min(innerHeight * 0.5, 430, paperText.scrollHeight + 8);
+    // widen the paper to fit the words, then size it from an off-screen copy of the text
+    const pw = Math.min(innerWidth - 32, 540);
+    const probe = paperText.cloneNode(true);
+    probe.style.cssText = `position:absolute;visibility:hidden;left:-9999px;top:0;width:${pw - 6}px`;
+    document.body.appendChild(probe);
+    const textH = probe.offsetHeight + 16;
+    probe.remove();
+    const want = Math.min(innerHeight * 0.62, 520, textH);
     const ph = Math.max(want, eh * .9);
+    env.style.setProperty("--paper-w", pw + "px");
     env.style.setProperty("--paper-h", ph + "px");
     env.style.marginTop = Math.max(0, ph - eh * .94) + 28 + "px"; // reserve room so the letter never covers the headline
     env.setAttribute("aria-expanded", "true");
-    $("#env-hint").textContent = "scroll the letter if you need to";
+    $("#env-hint").textContent = "with all my love";
     burst(innerWidth / 2, innerHeight * .55, 30, .7);
     setTimeout(() => { $("#next-letter").hidden = false; }, reduce ? 0 : 900);
   }
@@ -182,9 +223,9 @@
     reveal.textContent = "";
     words.forEach((w, i) => {
       const s = document.createElement("span");
-      s.textContent = w + " ";
-      if (/favourite|love/i.test(w)) { const em = document.createElement("em"); em.textContent = w + " "; s.textContent = ""; s.appendChild(em); }
-      s.style.opacity = 0; s.style.display = "inline-block"; s.style.transition = "opacity .4s, transform .5s cubic-bezier(.22,1,.36,1)"; s.style.transform = "translateY(10px)";
+      s.textContent = w;
+      if (/favourite|love/i.test(w)) { const em = document.createElement("em"); em.textContent = w; s.textContent = ""; s.appendChild(em); }
+      s.style.opacity = 0; s.style.display = "inline-block"; s.style.marginRight = ".3em"; s.style.transition = "opacity .4s, transform .5s cubic-bezier(.22,1,.36,1)"; s.style.transform = "translateY(10px)";
       reveal.appendChild(s);
       setTimeout(() => { s.style.opacity = 1; s.style.transform = "none"; }, reduce ? 0 : 140 * i);
     });
