@@ -285,39 +285,16 @@ button:focus-visible{outline:3px dashed var(--blue);outline-offset:4px;border-ra
   }
   .tap-hint.gone{opacity:0}
 }
-/* ---------- language toggle + Bengali typography ---------- */
-.lang{
-  position:fixed;top:20px;left:16px;z-index:31;min-height:40px;padding:4px 16px;border-radius:999px;
-  background:rgba(245,236,201,.1);border:1.5px solid rgba(245,236,201,.5);color:var(--cream);
-  font-family:var(--font-body);font-size:18px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s;
+/* ---------- the one Bengali line ---------- */
+.reveal[lang=bn]{font-family:"Atma","Hind Siliguri",cursive;font-weight:600;text-transform:none;line-height:1.45;font-size:clamp(25px,6vw,38px)}
+.paper-inner .bnline{
+  font-family:"Atma","Hind Siliguri",cursive;font-weight:600;font-size:clamp(21px,4.6vw,28px);line-height:1.5;text-align:center;color:#1d3a8a;
+  background:var(--card);margin:6px 0 14px;padding:6px 4px;text-wrap:balance;
 }
-.lang:hover{background:rgba(245,236,201,.22)}
-html[lang=bn] .lang{font-family:"Hind Siliguri",sans-serif;font-size:16px}
 .reveal-note{font-family:var(--font-script);font-weight:700;font-size:clamp(20px,4.4vw,26px);margin:10px 0 0;color:#1d3a8a;opacity:0;transition:opacity .8s .2s}
 .reveal-note.on{opacity:1}
-html[lang=bn] body{line-height:1.5}
-html[lang=bn] .headline{font-family:"Atma",cursive;font-weight:700;font-size:clamp(44px,11.5vw,104px);line-height:1.2}
-html[lang=bn] .to{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(18px,3.6vw,26px);line-height:1.5}
-html[lang=bn] .hint{font-size:clamp(20px,4vw,30px);line-height:1.45}
-html[lang=bn] .tap{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(16px,3vw,20px)}
-html[lang=bn] .paper-inner{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(16px,3.3vw,19.5px);line-height:28px}
 .paper-inner .key{color:#1d3a8a;font-weight:700}
-html[lang=bn] .paper-inner .key{font-weight:600}
-html[lang=bn] .note{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:clamp(16px,3.4vw,20px);line-height:1.5}
-html[lang=bn] .polaroid figcaption{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:17px;line-height:1.4}
-html[lang=bn] .balloon{font-family:"Atma",cursive;font-weight:700;font-size:clamp(38px,10.4vw,108px);line-height:1.25}
-html[lang=bn] .stamp{font-size:20px;line-height:1.3}
-html[lang=bn] .card h2{font-size:clamp(34px,8.6vw,56px);line-height:1.3}
-html[lang=bn] .card-eyebrow{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:18px}
-html[lang=bn] .card-sub{font-family:"Hind Siliguri",sans-serif;font-weight:500;font-size:clamp(17px,3.6vw,20px);line-height:1.55}
-html[lang=bn] .cta{font-size:clamp(18px,4vw,21px)}
-html[lang=bn] .reveal{font-size:clamp(24px,5.6vw,36px);line-height:1.4;text-transform:none}
 .reveal,.card-sub{text-wrap:balance}
-html[lang=bn] .balloon span{-webkit-text-stroke:1.6px #0b1430;filter:drop-shadow(0 3px 0 rgba(5,10,34,.6)) drop-shadow(0 0 20px rgba(245,236,201,.4))}
-html[lang=bn] .reveal-note{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:clamp(16px,3.6vw,19px)}
-html[lang=bn] .made{font-family:"Hind Siliguri",sans-serif;font-size:16px}
-html[lang=bn] .pg{font-family:"Hind Siliguri",sans-serif;font-weight:600;font-size:18px}
-html[lang=bn] .tap-hint{font-family:"Hind Siliguri",sans-serif;font-size:16px}
 
 @media (prefers-reduced-motion:reduce){
   .story i::after{transition:none}

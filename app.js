@@ -7,13 +7,9 @@
 
   /* ---------- language: Bengali by default, English one tap away ---------- */
   const L = window.MENS_DAY || {};
-  let lang = "bn";
-  try {
-    const q = new URLSearchParams(location.search).get("lang");
-    const saved = localStorage.getItem("md-lang");
-    lang = q === "en" || q === "bn" ? q : saved === "en" || saved === "bn" ? saved : "bn";
-  } catch (_) {}
-  const t = (k) => (L[lang] && L[lang][k]) ?? (L.bn && L.bn[k]) ?? "";
+  const lang = "en";
+  const BN_LINE = window.MENS_DAY_LINE || "";
+  const t = (k) => (L[lang] && L[lang][k]) ?? "";
 
   const paperText = $("#paper-text");
   const balloon = $("#balloon");
@@ -41,10 +37,14 @@
     const parts = t("letter") || [];
     parts.forEach((txt, i) => {
       const p = document.createElement("p");
-      if (i === parts.length - 1) p.className = "key";
       p.textContent = txt;
       paperText.appendChild(p);
     });
+    if (BN_LINE) {
+      const bn = document.createElement("p");
+      bn.className = "bnline"; bn.lang = "bn"; bn.textContent = BN_LINE;
+      paperText.appendChild(bn);
+    }
     const sign = document.createElement("p");
     sign.textContent = `— ${t("signoff")} ✦`;
     sign.style.textAlign = "right";
@@ -53,10 +53,11 @@
   function renderReveal(instant) {
     const reveal = $("#reveal"), note = $("#reveal-note");
     reveal.textContent = "";
-    reveal.setAttribute("aria-label", t("finalLine"));
+    reveal.setAttribute("aria-label", BN_LINE);
+    reveal.lang = "bn";
     note.classList.remove("on");
     const emph = t("emph");
-    const words = t("finalLine").split(" ");
+    const words = BN_LINE.split(" ");
     words.forEach((w, i) => {
       const s = document.createElement("span");
       if (emph && w.includes(emph)) { const em = document.createElement("em"); em.textContent = w; s.appendChild(em); } else s.textContent = w;
@@ -74,8 +75,6 @@
     $$("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
     $("#to-line").textContent = t("to");
     $("#final-title").textContent = t("finalTitle");
-    $("#lang").textContent = t("langBtn");
-    $("#lang").setAttribute("lang", lang === "bn" ? "en" : "bn");
     $$("[data-note]").forEach((el) => (el.textContent = (t("notes") || [])[+el.dataset.note] || ""));
     (t("stamps") || []).forEach((s, i) => { const el = $("#stamp-" + i); if (el) el.textContent = s; });
     buildBalloon();
@@ -87,12 +86,6 @@
     const hs = $("#bq-hint span"); if (hs) { hs.style.animation = "none"; void hs.offsetWidth; hs.style.animation = ""; }
     if (open) sizePaper();
   }
-  $("#lang").addEventListener("click", () => {
-    lang = lang === "bn" ? "en" : "bn";
-    try { localStorage.setItem("md-lang", lang); } catch (_) {}
-    applyLang();
-  });
-
   /* ---------- slow drifting petals / stars in the background ---------- */
   if (!reduce) {
     const drift = $("#drift");

@@ -1,44 +1,12 @@
 /* ------------------------------------------------------------------
-   All the words on the page live here, in Bengali (default) and English.
-   Edit, redeploy, done. Nothing here assumes who the person is.
+   All the words on the page live here. Edit, redeploy, done.
+   Everything is English except the one Bengali line (`bnLine`).
+   Nothing here assumes who the person is.
 ------------------------------------------------------------------- */
 window.MENS_DAY = {
-  bn: {
-    pageTitle: "শুভ পুরুষ দিবস",
-    pageDesc: "পুরুষ দিবসে একটু ধন্যবাদ আর একটু ভরসা।",
-    langBtn: "English",
-    hint: "চমক পেতে ফুলের তোড়াটায় ছুঁয়ে দেখো",
-    tapBq: "টুক · টুক · টুক",
-    hl1: "শুভ", hl2: "পুরুষ", hl3: "দিবস",
-    to: "যে মানুষটা সবসময় পাশে থাকে, তার জন্য",
-    envHint: "চিঠিটা পড়তে খামটায় ছুঁয়ে দেখো",
-    envHintOpen: "শ্রদ্ধা আর ভরসার সাথে",
-    letter: [
-      "শুভ পুরুষ দিবস। আজকের দিনটা একটু থেমে তোমাকে ধন্যবাদ বলার জন্য।",
-      "যা কিছু তুমি মুখে বলো না, চুপচাপ সামলে নাও, তারপরেও সবার জন্য সময় বের করো, আমি সেসব দেখি। কেউ না দেখলেও তোমার চেষ্টাটা দামি।",
-      "শক্ত হওয়া মানে কখনও না ভাঙা নয়। ক্লান্ত লাগলে থেমো, মন ভারী হলে কথা বোলো, সাহায্য চেয়ো। এতে লজ্জার কিছু নেই, এটাও সাহস।",
-      "তুমি বলতে, “আমি আছি তোর পাশে, ছিলাম আর থাকবো।” আজ কথাটা ফিরিয়ে দিলাম। আমিও আছি তোমার পাশে, ছিলাম, আর থাকবো।",
-    ],
-    signoff: "শ্রদ্ধা ও ভরসায়",
-    title: "তোমার জন্য",
-    notes: ["সবটা একা বইতে হবে না", "সাহায্য চাওয়াও শক্ত মানুষের কাজ", "ক্লান্ত লাগলে একটু থেমো, তাতে হার নেই"],
-    stamps: ["শ্রদ্ধা", "তুমি জরুরি"],
-    cap1: "অনেকটা পথ এসেছ", cap2: "একটু দম নাও", cap3: "রাত জাগা, ভোরে ওঠা", cap4: "এগিয়ে চলো",
-    next: "পরের »", back: "« পিছনে", replay: "আবার »",
-    finalTitle: "শেষ একটা কথা…",
-    eyebrow: "শুধু তোমার জন্য",
-    sub: "চুপচাপ যা কিছু সামলাও, তার জন্য ধন্যবাদ।",
-    cta: "শেষ চমকটা দেখো »",
-    finalLine: "আমি আছি তোর পাশে, ছিলাম আর থাকবো।",
-    emph: "পাশে",
-    finalNote: "তোমার কথাটাই তোমাকে ফিরিয়ে দিলাম।",
-    made: "শ্রদ্ধা নিয়ে, শুধু তোমার জন্য",
-    tapL: "« বাঁ দিকে ট্যাপ: পিছনে", tapR: "ডান দিকে ট্যাপ: এগিয়ে »",
-  },
   en: {
     pageTitle: "Happy Men's Day",
     pageDesc: "A small thank-you and a promise, for Men's Day.",
-    langBtn: "বাংলা",
     hint: "Tap the bouquet for a surprise",
     tapBq: "tap · tap · tap",
     hl1: "Happy", hl2: "Men's", hl3: "Day",
@@ -49,7 +17,7 @@ window.MENS_DAY = {
       "Happy Men's Day. Today is just a chance to pause and say thank you.",
       "For everything you carry quietly, and for still making time for everyone else: I see it. Your effort counts, even when nobody notices.",
       "Being strong doesn't mean never breaking. Rest when you're tired, talk when it feels heavy, ask for help. None of that is weakness. It takes courage too.",
-      "You used to say, “I'm by your side. I was, and I always will be.” Today I'm giving those words back. I'm by your side too, I was, and I always will be.",
+      "You used to say this. Today, it's my turn.",
     ],
     signoff: "With respect and trust",
     title: "FOR YOU",
@@ -61,10 +29,12 @@ window.MENS_DAY = {
     eyebrow: "just for you",
     sub: "For everything you carry quietly: thank you.",
     cta: "See the last surprise »",
-    finalLine: "I'm by your side. I was, and I always will be.",
-    emph: "side",
+    emph: "পাশে",
     finalNote: "Your own words, given back to you.",
     made: "made with respect, just for you",
     tapL: "« tap left: back", tapR: "tap right: next »",
   },
 };
+
+// The one line in Bengali: "I'm by your side. I was, and I always will be."
+window.MENS_DAY_LINE = "আমি আছি তোর পাশে, ছিলাম আর থাকবো।";
