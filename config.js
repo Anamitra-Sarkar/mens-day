@@ -1,40 +1,44 @@
 /* ------------------------------------------------------------------
-   All the words on the page live here. Edit, redeploy, done.
-   Everything is English except the one Bengali line (`bnLine`).
-   Nothing here assumes who the person is.
+   The words on the page. Each block below is its own section.
+   The English text is hers, verbatim. The one Bengali line is his.
 ------------------------------------------------------------------- */
 window.MENS_DAY = {
   en: {
     pageTitle: "Happy Men's Day",
-    pageDesc: "A small thank-you and a promise, for Men's Day.",
+    pageDesc: "If I could tell you just one thing…",
     hint: "Tap the bouquet for a surprise",
     tapBq: "tap · tap · tap",
     hl1: "Happy", hl2: "Men's", hl3: "Day",
-    to: "to the one who always shows up",
     envHint: "tap the envelope to read the letter",
-    envHintOpen: "with respect and trust",
+    envHintOpen: "read slowly",
+
+    /* Section 2: the envelope letter */
     letter: [
-      "Happy Men's Day. Today is just a chance to pause and say thank you.",
-      "For everything you carry quietly, and for still making time for everyone else: I see it. Your effort counts, even when nobody notices.",
-      "Being strong doesn't mean never breaking. Rest when you're tired, talk when it feels heavy, ask for help. None of that is weakness. It takes courage too.",
-      "You used to say this. Today, it's my turn.",
+      "If I could tell you just one thing...",
+      "Thank you for being a part of my journey. You will always be one of those people whose presence made a difference in my story. You may see yourself as just another person living your life, but in someone else's story, you became a beautiful chapter.",
     ],
-    signoff: "With respect and trust",
-    title: "FOR YOU",
-    notes: ["you don't have to carry it all alone", "asking for help is strength too", "resting when you're tired is not losing"],
-    stamps: ["respect", "you matter"],
-    cap1: "you've come far", cap2: "take a breath", cap3: "late nights, early starts", cap4: "keep climbing",
-    next: "next »", back: "« back", replay: "replay »",
+
+    /* Section 3: the wishes (title + the full sentence + four pictures) */
+    title: "I WISH YOU",
+    wishNote: "I don't know what the future holds, but I genuinely wish you a life filled with beautiful possibilities, peaceful mornings, achievements worth celebrating and happiness that stays.",
+    cap1: "beautiful possibilities", cap2: "peaceful mornings", cap3: "achievements worth celebrating", cap4: "happiness that stays",
+
+    /* Section 4 */
+    chTitle: "You helped me see things differently.",
+    chBody: "You reminded me that I could be stronger than my circumstances and that there was still so much waiting for me beyond the difficult days.",
+
+    /* Section 5: the finale, his words in Bengali */
     finalTitle: "One Last Thing…",
-    eyebrow: "just for you",
-    sub: "For everything you carry quietly: thank you.",
+    eyebrow: "thank you",
+    sub: "Thank you for being a part of my journey.",
     cta: "See the last surprise »",
     emph: "পাশে",
-    finalNote: "Your own words, given back to you.",
-    made: "made with respect, just for you",
+    finalNote: "Words you once said.",
+
+    next: "next »", back: "« back", replay: "replay »",
     tapL: "« tap left: back", tapR: "tap right: next »",
   },
 };
 
-// The one line in Bengali: "I'm by your side. I was, and I always will be."
+// His line, in Bengali: "I'm by your side. I was, and I always will be."
 window.MENS_DAY_LINE = "আমি আছি তোর পাশে, ছিলাম আর থাকবো।";

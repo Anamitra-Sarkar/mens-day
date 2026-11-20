@@ -3,7 +3,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const ORDER = ["bouquet", "letter", "collage", "final"];
+  const ORDER = ["bouquet", "letter", "wish", "chapter", "final"];
 
   /* ---------- language: Bengali by default, English one tap away ---------- */
   const L = window.MENS_DAY || {};
@@ -23,32 +23,29 @@
     const title = t("title");
     balloon.setAttribute("aria-label", title);
     balloon.replaceChildren();
-    graphemes(title).forEach((ch, i) => {
-      const s = document.createElement("span");
-      s.setAttribute("aria-hidden", "true");
-      s.style.setProperty("--i", i);
-      s.style.setProperty("--rr", `${(i % 2 ? 1 : -1) * (6 + (i % 3) * 3)}deg`);
-      if (ch.trim() === "") s.className = "gap"; else s.textContent = ch;
-      balloon.appendChild(s);
+    let n = 0;
+    title.split(" ").forEach((word) => {
+      const w = document.createElement("b");               // one box per word so a long title wraps between words, never inside one
+      w.className = "word";
+      graphemes(word).forEach((ch) => {
+        const s = document.createElement("span");
+        s.setAttribute("aria-hidden", "true");
+        s.style.setProperty("--i", n);
+        s.style.setProperty("--rr", `${(n % 2 ? 1 : -1) * (6 + (n % 3) * 3)}deg`);
+        s.textContent = ch; n++;
+        w.appendChild(s);
+      });
+      balloon.appendChild(w);
     });
   }
   function buildLetter() {
     paperText.replaceChildren();
-    const parts = t("letter") || [];
-    parts.forEach((txt, i) => {
+    (t("letter") || []).forEach((txt, i) => {
       const p = document.createElement("p");
+      if (i === 0) p.className = "lead";
       p.textContent = txt;
       paperText.appendChild(p);
     });
-    if (BN_LINE) {
-      const bn = document.createElement("p");
-      bn.className = "bnline"; bn.lang = "bn"; bn.textContent = BN_LINE;
-      paperText.appendChild(bn);
-    }
-    const sign = document.createElement("p");
-    sign.textContent = `— ${t("signoff")} ✦`;
-    sign.style.textAlign = "right";
-    paperText.appendChild(sign);
   }
   function renderReveal(instant) {
     const reveal = $("#reveal"), note = $("#reveal-note");
@@ -73,10 +70,7 @@
     document.title = t("pageTitle");
     const md = document.querySelector('meta[name="description"]'); if (md) md.content = t("pageDesc");
     $$("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
-    $("#to-line").textContent = t("to");
     $("#final-title").textContent = t("finalTitle");
-    $$("[data-note]").forEach((el) => (el.textContent = (t("notes") || [])[+el.dataset.note] || ""));
-    (t("stamps") || []).forEach((s, i) => { const el = $("#stamp-" + i); if (el) el.textContent = s; });
     buildBalloon();
     buildLetter();
     const open = $("#envelope").getAttribute("aria-expanded") === "true";
@@ -212,7 +206,7 @@
     });
     $$("#story i").forEach((b, i) => b.classList.toggle("on", i <= ORDER.indexOf(name)));
     if (push) history.pushState(null, "", "#" + name);
-    if (name === "collage" && !reduce) setTimeout(() => burst(W / 2, H * .3, 36, .8), 500);
+    if (name === "wish" && !reduce) setTimeout(() => burst(W / 2, H * .3, 36, .8), 500);
   }
   addEventListener("hashchange", () => go(location.hash.slice(1), false));
   $$("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
@@ -242,7 +236,7 @@
     const ph = Math.max(want, eh * .9);
     env.style.setProperty("--paper-w", pw + "px");
     env.style.setProperty("--paper-h", ph + "px");
-    env.style.marginTop = Math.max(0, ph - eh * .94) + 28 + "px"; // reserve room so the letter never covers the headline
+    env.style.marginTop = Math.max(0, ph - eh * .94, eh * .66) + 28 + "px"; // reserve room so the letter never covers the headline
   }
   function openEnvelope() {
     if (env.getAttribute("aria-expanded") === "true") return;
@@ -277,8 +271,8 @@
   /* ---------- phone: tap the right half = next, left half = back (like story viewers) ---------- */
   function advance() {
     if (current === "bouquet") bq.click();
-    else if (current === "letter") { if (env.getAttribute("aria-expanded") !== "true") openEnvelope(); else go("collage"); }
-    else if (current === "collage") go("final");
+    else if (current === "letter") { if (env.getAttribute("aria-expanded") !== "true") openEnvelope(); else go("wish"); }
+    else if (current === "wish" || current === "chapter") go(ORDER[ORDER.indexOf(current) + 1]);
     else if (current === "final") { if (!cta.disabled) cta.click(); else $("#replay").click(); }
   }
   function back() {
